@@ -34,3 +34,9 @@ variable "private-subnet-cidr-value" {
   default     = "10.0.1.0/24"
 }
 
+variable "private-subnet-cidr-value2" {
+  description = "CIDR for private subnet 2 creation"
+  type        = string
+  default     = "10.0.2.0/24"
+}
+

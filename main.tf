@@ -48,6 +48,17 @@ resource "aws_subnet" "our-private-subnet" {
   }
 }
 
+resource "aws_subnet" "our-private-subnet2" {
+  vpc_id                  = aws_vpc.our-vpc.id
+  cidr_block              = var.private-subnet-cidr-value2
+  map_public_ip_on_launch = false
+  availability_zone               = data.aws_availability_zones.available.names[1]
+  tags = {
+    Name : "Our-Private-Subnet2"
+    Environment : var.environment
+  }
+}
+
 ########################################################################################
 # AWS ROUTE TABLE CREATION
 ########################################################################################
@@ -68,6 +79,14 @@ resource "aws_route_table" "our-private-route-table" {
   }
 }
 
+resource "aws_route_table" "our-private-route-table2" {
+  vpc_id = aws_vpc.our-vpc.id
+  tags = {
+    Name : "Our-Private-Route-Table"
+    Environment : var.environment
+  }
+}
+
 ########################################################################################
 # AWS SUBNET ROUTE TABLE ASSOCIATION
 ########################################################################################
@@ -80,6 +99,11 @@ resource "aws_route_table_association" "our-public-route-table-association" {
 resource "aws_route_table_association" "our-private-route-table-association" {
   subnet_id      = aws_subnet.our-private-subnet.id
   route_table_id = aws_route_table.our-private-route-table.id
+}
+
+resource "aws_route_table_association" "our-private-route-table-association2" {
+  subnet_id      = aws_subnet.our-private-subnet2.id
+  route_table_id = aws_route_table.our-private-route-table2.id
 }
 
 ########################################################################################
