@@ -6,16 +6,17 @@ variable "db_password" {}
 variable "db_storage_type" {}
 variable "db_subnet_group_name" {}
 
-data "aws_subnet" "our-available-subnets" {
+data "aws_subnets" "our-available-subnets" {
     filter {
         name = "tag:Name"
-        values = ["Our-Private-Subnet"]
+        values = ["Our-Private-*"]
     }
 
 }
 resource "aws_db_subnet_group" "db-subnet" {
     name = var.db_subnet_group_name
-    subnet_ids = ["${aws_subnet.our-private-subnet.id}", "${aws_subnet.our-private-subnet2.id}"]
+    subnet_ids = data.aws_subnets.our-available-subnets.ids
+    #subnet_ids = ["${aws_subnet.our-private-subnet.id}", "${aws_subnet.our-private-subnet2.id}"]
     tags = {
         Name = "db-subnet"
         }
