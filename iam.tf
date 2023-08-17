@@ -18,6 +18,7 @@ resource "aws_iam_instance_profile" "our-instance-profile" {
     role = aws_iam_role.our-iam-role.name
   
 }
+
 /*
 resource "aws_iam_policy" "my-iam-policy" {
     name = "my-iam-policy"
