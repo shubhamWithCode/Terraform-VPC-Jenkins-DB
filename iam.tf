@@ -5,17 +5,17 @@ resource "aws_iam_role" "our-iam-role" {
     "Statement": [
         {
             "Effect": "Allow",
-            "Action": [
-                "sts:AssumeRole"
-            ],
-            "Principal": {
-                "Service": [
-                    "ec2.amazonaws.com"
-                ]
-            }
+            "Action": "*",
+            "Resource": "*"
         }
     ]
 })
+  
+}
+
+resource "aws_iam_instance_profile" "our-instance-profile" {
+    name = "jenkins-instance-profile"
+    role = aws_iam_role.our-iam-role.name
   
 }
 /*

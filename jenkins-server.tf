@@ -71,8 +71,4 @@ resource "aws_instance" "jenkins-server" {   # we are creating a new instance fo
     }
 }
 
-resource "aws_iam_instance_profile" "our-instance-profile" {
-    name = "jenkins-instance-profile"
-    role = aws_iam_role.our-iam-role.name
-  
-}
+
