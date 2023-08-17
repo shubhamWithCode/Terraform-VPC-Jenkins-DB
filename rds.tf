@@ -1,3 +1,5 @@
+/*
+
 variable "db_engine" {} # These are the variables to launch RDS value for variable is in terraform.tfvars file
 variable "db_engine_version" {}
 variable "db_name" {}   
@@ -43,3 +45,4 @@ resource "aws_db_instance" "our-db-instance" { # "aws_db_instance" api help to c
 }
 
   
+*/

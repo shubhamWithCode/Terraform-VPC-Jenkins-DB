@@ -64,8 +64,15 @@ resource "aws_instance" "jenkins-server" {   # we are creating a new instance fo
     subnet_id = aws_subnet.our-public-subnet.id   # this is the id of the subnet we are using to launch the instance
     user_data = file("./jenkins-server.sh")  # this is the script that will be executed during the creation of the instance
     key_name = "terraform" # this is the key name that we have created in console
+    iam_instance_profile = aws_iam_instance_profile.our-instance-profile.name
     security_groups = [aws_security_group.our-security-group.id] # this is security grp in which we have openend ports
     tags = {
         Name = "jenkins-server"  # this will provide name to instance 
     }
+}
+
+resource "aws_iam_instance_profile" "our-instance-profile" {
+    name = "jenkins-instance-profile"
+    role = aws_iam_role.our-iam-role.name
+  
 }
