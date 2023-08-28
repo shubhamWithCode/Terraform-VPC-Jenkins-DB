@@ -37,6 +37,17 @@ resource "aws_subnet" "our-public-subnet" {  # "aws_subnet" is api help to creat
   }
 }
 
+resource "aws_subnet" "our-public-subnet2" {  # "aws_subnet" is api help to create api
+  vpc_id                  = aws_vpc.our-vpc.id  # creating subnet inside this vpc
+  cidr_block              = var.public-subnet-cidr-value2 # This will be the CIDR for subnet fetched from variable.tf
+  map_public_ip_on_launch = true  # this will provide public ip address to instance when launched this subnet
+  availability_zone               = data.aws_availability_zones.available.names[1] # Subnet will span this az
+  tags = { # This is the list of tags
+    Name : "Our-Public-Subnet" # subnet name
+    Environment : var.environment # subnet environment
+  }
+}
+
 resource "aws_subnet" "our-private-subnet" {
   vpc_id                  = aws_vpc.our-vpc.id
   cidr_block              = var.private-subnet-cidr-value
@@ -71,6 +82,13 @@ resource "aws_route_table" "our-public-route-table" { # creating a new route tab
   }
 }
 
+resource "aws_route_table" "our-public-route-table2" { # creating a new route table with help of "aws_route_table"
+  vpc_id = aws_vpc.our-vpc.id # new route table will be created in this vpc 
+  tags = {
+    Name : "Our-Public-Route-Table"
+    Environment : var.environment
+  }
+}
 resource "aws_route_table" "our-private-route-table" {
   vpc_id = aws_vpc.our-vpc.id
   tags = {
@@ -96,6 +114,11 @@ resource "aws_route_table_association" "our-public-route-table-association" { # 
   route_table_id = aws_route_table.our-public-route-table.id # This is the route table which will be associated with
 }
 
+resource "aws_route_table_association" "our-public-route-table-association2" { # This will associate route table with subnet
+  subnet_id      = aws_subnet.our-public-subnet2.id # This will associate route table with subnet
+  route_table_id = aws_route_table.our-public-route-table2.id # This is the route table which will be associated with
+}
+
 resource "aws_route_table_association" "our-private-route-table-association" {
   subnet_id      = aws_subnet.our-private-subnet.id
   route_table_id = aws_route_table.our-private-route-table.id
@@ -112,6 +135,12 @@ resource "aws_route_table_association" "our-private-route-table-association2" {
 
 resource "aws_route" "our-public-route" { # This will create routes inside route table
   route_table_id         = aws_route_table.our-public-route-table.id # this the route table in which routes will be created
+  destination_cidr_block = "0.0.0.0/0" # this is the route for internet connections
+  gateway_id             = aws_internet_gateway.our-igw.id # This is internet gateway to the route traffic to internet connections
+}
+
+resource "aws_route" "our-public-route2" { # This will create routes inside route table
+  route_table_id         = aws_route_table.our-public-route-table2.id # this the route table in which routes will be created
   destination_cidr_block = "0.0.0.0/0" # this is the route for internet connections
   gateway_id             = aws_internet_gateway.our-igw.id # This is internet gateway to the route traffic to internet connections
 }

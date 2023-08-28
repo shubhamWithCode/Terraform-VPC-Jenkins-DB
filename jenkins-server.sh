@@ -38,3 +38,12 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
 sudo apt update -y
 
 sudo apt install terraform -y
+
+###############################################################################################################
+#                   Docker Installation
+###############################################################################################################
+
+apt update -y
+apt install -y docker.io
+systemctl start docker
+systemctl enable docker
