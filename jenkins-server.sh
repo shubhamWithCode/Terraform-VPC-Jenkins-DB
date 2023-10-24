@@ -45,23 +45,39 @@ sudo apt install terraform -y
 #                   Docker Installation
 ###############################################################################################################
 
-apt update -y
-apt install -y docker.io
-systemctl start docker
-systemctl enable docker
+# Add Docker's official GPG key:
+sudo apt-get update -y
+sudo apt-get install -y ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
+# Add the repository to Apt sources:
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update -y
 
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+##########################################################################################
+# Other installation
+##########################################################################################
+
+usermod -aG docker jenkins
 apt install unzip -y
 
+###########################################################################################
 # To install AWS CLI V2
-
+###########################################################################################
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
 
-
+###########################################################################################
 # To install kubectl
-
+###########################################################################################
  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
  curl -LO https://dl.k8s.io/release/v1.28.3/bin/linux/amd64/kubectl
