@@ -19,6 +19,8 @@ apt-get update -y # This will update the repository
 
 apt-get install jenkins -y # This will install jenkins
 
+echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 #####################################################################################################
 # Terraform Installation
 #####################################################################################################
