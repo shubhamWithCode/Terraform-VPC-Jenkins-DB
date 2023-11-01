@@ -95,3 +95,5 @@ mv ./kubectl ~/.local/bin/kubectl
 
 apt update -y
 apt install maven -y
+
+usermod -aG docker jenkins
